@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/IDE/CargoApp/app/src/main/res/layout/activity_create_order.xml" value="0.25" />
+        <entry key="..\:/IDE/CargoApp/app/src/main/res/layout/activity_login.xml" value="0.3484375" />
+        <entry key="..\:/IDE/CargoApp/app/src/main/res/layout/activity_main.xml" value="0.358695652173913" />
+        <entry key="..\:/IDE/CargoApp/app/src/main/res/layout/activity_register.xml" value="0.3484375" />
+        <entry key="..\:/IDE/CargoApp/app/src/main/res/layout/activity_welcome.xml" value="0.358695652173913" />
+        <entry key="..\:/IDE/CargoApp/app/src/main/res/layout/fragment_gcatalogue.xml" value="0.3614583333333333" />
+        <entry key="..\:/IDE/CargoApp/app/src/main/res/layout/fragment_global_catalogue.xml" value="0.358695652173913" />
+        <entry key="..\:/IDE/CargoApp/app/src/main/res/layout/fragment_local_orders.xml" value="0.358695652173913" />
+        <entry key="..\:/IDE/CargoApp/app/src/main/res/layout/fragment_profile.xml" value="0.3484375" />
+        <entry key="..\:/IDE/CargoApp/app/src/main/res/layout/order_item.xml" value="0.41379310344827586" />
+        <entry key="..\:/IDE/CargoApp/app/src/main/res/menu/bnm_main_menu.xml" value="0.29743589743589743" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
