@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.SimpleDateFormat;
@@ -13,18 +14,20 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
-public class GlobalOrdersAdapter extends RecyclerView.Adapter<GlobalOrdersAdapter.MyViewHolder> {
+public class LocalOrdersAdapter extends RecyclerView.Adapter<LocalOrdersAdapter.MyViewHolder>{
 
     private ArrayList<HashMap<String, String>> mData;
 
-    public GlobalOrdersAdapter(ArrayList<HashMap<String, String>> data) {
+    public LocalOrdersAdapter (ArrayList<HashMap<String, String>> data) {
         mData = data;
     }
 
+
+    @NonNull
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public LocalOrdersAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.order_item, parent, false);
-        return new MyViewHolder(view);
+        return new LocalOrdersAdapter.MyViewHolder(view);
     }
 
     public HashMap<String, String> parseData(HashMap<String, String> map)
@@ -54,7 +57,7 @@ public class GlobalOrdersAdapter extends RecyclerView.Adapter<GlobalOrdersAdapte
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull LocalOrdersAdapter.MyViewHolder holder, int position) {
         HashMap<String, String> itemData = mData.get(position);
         HashMap<String, String> formatedData = parseData(itemData);
         holder.textViewId.setText(itemData.get("id"));
@@ -72,7 +75,7 @@ public class GlobalOrdersAdapter extends RecyclerView.Adapter<GlobalOrdersAdapte
 
     @Override
     public int getItemCount() {
-        return mData.size();
+        return 0;
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -104,6 +107,4 @@ public class GlobalOrdersAdapter extends RecyclerView.Adapter<GlobalOrdersAdapte
             textViewDriver = itemView.findViewById(R.id.text_view_driver);
         }
     }
-
-
 }

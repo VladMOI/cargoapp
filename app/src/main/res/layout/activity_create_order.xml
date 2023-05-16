@@ -59,9 +59,9 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/etAddressTo"
                 app:layout_constraintLeft_toLeftOf="parent"/>
-            <EditText
-                android:id="@+id/etSendedAt"
-                android:hint="01 07 2023"
+            <Button
+                android:id="@+id/btnSendedAt"
+                android:text="Pick a date"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:inputType="text"
@@ -72,11 +72,11 @@
                 android:text="Date recieved at: "
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/etSendedAt"
+                app:layout_constraintTop_toBottomOf="@id/btnSendedAt"
                 app:layout_constraintLeft_toLeftOf="parent"/>
-            <EditText
-                android:id="@+id/etRecievedAt"
-                android:hint="03 07 2023"
+            <Button
+                android:id="@+id/btnRecievedAt"
+                android:text="Pick a date"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:inputType="text"
@@ -87,7 +87,7 @@
                 android:text="Price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/etRecievedAt"
+                app:layout_constraintTop_toBottomOf="@id/btnRecievedAt"
                 app:layout_constraintLeft_toLeftOf="parent"/>
             <EditText
                 android:id="@+id/etPrice"
@@ -107,7 +107,7 @@
                 android:id="@+id/etDistance"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:inputType="text"
+                android:inputType="number"
                 app:layout_constraintTop_toBottomOf="@id/tvDistance"
                 app:layout_constraintLeft_toLeftOf="parent"/>
             <TextView
@@ -150,7 +150,7 @@
                 android:id="@+id/etPackageWeight"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:inputType="text"
+                android:inputType="number"
                 app:layout_constraintTop_toBottomOf="@id/tvPackageWeight"
                 app:layout_constraintLeft_toLeftOf="parent"/>
             <LinearLayout
