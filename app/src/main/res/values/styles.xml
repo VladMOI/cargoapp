@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <style name="CardView.Bordered" parent="CardView.Light">
+        <item name="background">@drawable/bordered_cardview</item>
+
+    </style>
+</resources>

@@ -1,9 +1,13 @@
 package ua.moyseienko.cargoapp;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,8 +17,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
-public class GlobalOrdersAdapter extends RecyclerView.Adapter<GlobalOrdersAdapter.MyViewHolder> {
+import ua.moyseienko.cargoapp.services.externaldb.ExternalAlterOrder;
+import ua.moyseienko.cargoapp.services.externaldb.ExternalSelectOrderByEmail;
+import ua.moyseienko.cargoapp.services.localdb.LocalSelectUser;
 
+public class GlobalOrdersAdapter extends RecyclerView.Adapter<GlobalOrdersAdapter.MyViewHolder> {
+    View view;
     private ArrayList<HashMap<String, String>> mData;
 
     public GlobalOrdersAdapter(ArrayList<HashMap<String, String>> data) {
@@ -23,7 +31,10 @@ public class GlobalOrdersAdapter extends RecyclerView.Adapter<GlobalOrdersAdapte
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.order_item, parent, false);
+        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.order_item, parent, false);
+        if(mData.size() == 0 || mData == null){
+            Toast.makeText(view.getContext(), "No orders found!", Toast.LENGTH_SHORT).show();
+        }
         return new MyViewHolder(view);
     }
 
@@ -68,6 +79,66 @@ public class GlobalOrdersAdapter extends RecyclerView.Adapter<GlobalOrdersAdapte
         holder.textViewPackageType.setText(itemData.get("packageType"));
         holder.textViewPackageWeight.setText(itemData.get("packageWeight"));
         holder.textViewDriver.setText(itemData.get("driver"));
+        holder.btnApply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                System.out.println("Clicked on " + position);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(holder.btnApply.getContext());
+                builder.setTitle("Confirmation");
+                builder.setMessage("Are you sure you want to apply for this order?");
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        System.out.println("Dialog yes");
+                        int id = Integer.parseInt(itemData.get("id"));
+                        applyForOrder(id);
+                        dialogInterface.dismiss();
+                        mData.remove(position);
+                        notifyDataSetChanged();
+                    }
+                });
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        System.out.println("Dialog no");
+                        dialogInterface.dismiss();
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
+    }
+
+    public void applyForOrder(int orderId){
+        LocalSelectUser selectUser = new LocalSelectUser();
+        ArrayList<HashMap<String, String>> resultSelectUser = selectUser.selectUser(view.getContext());
+        System.out.println("Result select = " + resultSelectUser);
+
+        HashMap<String,String> localUser = resultSelectUser.get(0);
+        String email = localUser.get("email");
+        System.out.println("Email form local db  = " + email);
+
+        //new thread
+        try {
+            alterOrderRequest(orderId, email);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void alterOrderRequest(int id, String email) throws InterruptedException {
+        Thread alterOrderThread = new Thread(
+        ){
+            @Override
+            public void run() {
+                ExternalAlterOrder externalAlterOrder = new ExternalAlterOrder();
+                String result = externalAlterOrder.alterOrder(id, email);
+            }
+        };
+        alterOrderThread.start();
+        alterOrderThread.join();
     }
 
     @Override
@@ -88,7 +159,7 @@ public class GlobalOrdersAdapter extends RecyclerView.Adapter<GlobalOrdersAdapte
         TextView textViewPackageType;
         TextView textViewPackageWeight;
         TextView textViewDriver;
-
+        Button btnApply;
         public MyViewHolder(View itemView) {
             super(itemView);
             textViewId = itemView.findViewById(R.id.text_view_id);
@@ -102,6 +173,7 @@ public class GlobalOrdersAdapter extends RecyclerView.Adapter<GlobalOrdersAdapte
             textViewPackageType = itemView.findViewById(R.id.text_view_package_type);
             textViewPackageWeight = itemView.findViewById(R.id.text_view_package_weight);
             textViewDriver = itemView.findViewById(R.id.text_view_driver);
+            btnApply = itemView.findViewById(R.id.btnApply);
         }
     }
 

@@ -25,7 +25,7 @@ public class ExternalCreateOrder {
         HashMap<String, String> map = new HashMap<>();
         map.put("addressFrom", addressFrom);
         map.put("addressTo", addressTo);
-        map.put("sedingDate", sentAt);
+        map.put("sendingDate", sentAt);
         map.put("recievedDate", receivedAt);
         map.put("price", price);
         map.put("distance", distance);

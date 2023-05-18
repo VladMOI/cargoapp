@@ -11,22 +11,22 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 
-public class ExternalSelectOrders {
-    public String selectOrders(String email) {
+public class ExternalDeleteOrder {
+    public String deleteOrder(int id) {
         System.out.println("Opening cnnection to API...");
         StringBuilder response = new StringBuilder();
         URL url = null;
         HttpURLConnection con = null;
         try {
-            url = new URL("http://62.122.156.135:5000/cargoapp/api/select-all-orders");
+            url = new URL("http://62.122.156.135:5000/cargoapp/api/delete-order");
             con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("POST");
             con.setRequestProperty("Content-Type", "application/json");
             con.setConnectTimeout(5000); // 5 секунд
             con.setReadTimeout(10000); // 10 секунд
             HashMap<String, String> map = new HashMap<>();
-            System.out.println("Email in externalorderbyemail = " + email);
-            map.put("email", email);
+            System.out.println("Email in externalalterorder = " + id);
+            map.put("id", String.valueOf(id));
             JSONObject jsonEmail = new JSONObject(map);
             String jsonEmailStr = jsonEmail.toString();
             try (DataOutputStream outputStream = new DataOutputStream(con.getOutputStream())) {
@@ -66,4 +66,5 @@ public class ExternalSelectOrders {
         }
         return "";
     }
+
 }

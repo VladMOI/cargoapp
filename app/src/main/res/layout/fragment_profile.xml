@@ -9,6 +9,8 @@
     <TextView
         android:id="@+id/tvFirstName"
         android:text="First name"
+        android:textStyle="bold"
+        android:layout_marginVertical="3dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
@@ -24,6 +26,8 @@
     <TextView
         android:id="@+id/tvLastName"
         android:text="Last name"
+        android:textStyle="bold"
+        android:layout_marginVertical="3dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/tvFirstNameData"
@@ -38,6 +42,8 @@
     <TextView
         android:id="@+id/tvEmail"
         android:text="Email"
+        android:textStyle="bold"
+        android:layout_marginVertical="3dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/tvLastNameData"
@@ -52,6 +58,8 @@
     <TextView
         android:id="@+id/tvExperience"
         android:text="Experience"
+        android:textStyle="bold"
+        android:layout_marginVertical="3dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/tvEmailData"
@@ -66,6 +74,8 @@
     <TextView
         android:id="@+id/tvBalance"
         android:text="Balance"
+        android:textStyle="bold"
+        android:layout_marginVertical="3dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/tvExperienceData"

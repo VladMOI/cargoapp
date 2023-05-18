@@ -13,6 +13,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import ua.moyseienko.cargoapp.services.externaldb.ExternalCreateOrder;
+import ua.moyseienko.cargoapp.services.externaldb.ExternalInsertUser;
 import ua.moyseienko.cargoapp.services.localdb.LocalInsertUser;
 import ua.moyseienko.cargoapp.services.localdb.LocalSelectUser;
 
@@ -62,7 +64,11 @@ public class RegisterActivity extends AppCompatActivity {
                         Toast.makeText(RegisterActivity.this, "Please field all fields", Toast.LENGTH_SHORT).show();
                     }
                     else {
-                        register(firstname,lastname,email,password,confirmPassword,experience);
+                        try {
+                            register(firstname,lastname,email,password,confirmPassword,experience);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
                     break;
                 case  R.id.tvLogin2:
@@ -70,14 +76,26 @@ public class RegisterActivity extends AppCompatActivity {
             }
         }
     };
-    public void register(String firstname,String lastname,String email,String password,String confirmPassword,String experience)
-    {
+    public void register(String firstname,String lastname,String email,String password,String confirmPassword,String experience) throws InterruptedException {
         System.out.println("Registering..");
 
         LocalInsertUser insertUser = new LocalInsertUser();
 
         long rowsAffected = insertUser.insert(RegisterActivity.this, firstname,lastname,email,password,0, Integer.parseInt(experience));
         System.out.println("Rows affected " + rowsAffected);
+        //uploading new user to db
+
+        Thread createUserThread = new Thread(){
+            @Override
+            public void run() {
+                ExternalInsertUser externalInsertUser = new ExternalInsertUser();
+                String result = externalInsertUser.createUser(firstname,lastname, email, experience, "0", password);
+            }
+        };
+        createUserThread.start();
+        createUserThread.join();
+
+
         startActivity(new Intent(RegisterActivity.this, MainActivity.class));
     }
 }

@@ -22,10 +22,12 @@ import java.util.HashMap;
 import ua.moyseienko.cargoapp.GlobalOrdersAdapter;
 import ua.moyseienko.cargoapp.R;
 import ua.moyseienko.cargoapp.services.externaldb.ExternalSelectOrders;
+import ua.moyseienko.cargoapp.services.localdb.LocalSelectUser;
 
 public class GlobalCatalogueFragment extends Fragment {
     View rootView;
     RecyclerView recyclerView;
+    ArrayList<HashMap<String,String>> orders;
     public GlobalCatalogueFragment() {
         // Required empty public constructor
     }
@@ -34,26 +36,43 @@ public class GlobalCatalogueFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_gcatalogue, container, false);
+
         recyclerView = rootView.findViewById(R.id.rvGlobal);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
-        GlobalOrdersAdapter adapter = new GlobalOrdersAdapter(new ArrayList<>());
-        recyclerView.setAdapter(adapter);
 
 
         FloatingActionButton fab = rootView.findViewById(R.id.fab);
         fab.setOnClickListener(clickListener);
-        getOrders(new OrdersCallback() {
-            @Override
-            public void onOrdersReceived(ArrayList<HashMap<String, String>> orders) {
-                // делаем что-то с полученными данными
-                GlobalOrdersAdapter adapter = new GlobalOrdersAdapter(orders);
-                System.out.println("Orders " + orders);
-                recyclerView.setAdapter(adapter);
-            }
-        });
 
+        LocalSelectUser localSelectUser = new LocalSelectUser();
+        ArrayList<HashMap<String,String>> localUser = localSelectUser.selectUser(rootView.getContext());
+        HashMap<String,String> user = localUser.get(0);
+        String email = user.get("email");
+
+        try {
+            selectOrders(email);
+            GlobalOrdersAdapter adapter = new GlobalOrdersAdapter(orders);
+            recyclerView.setAdapter(adapter);
+
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         return rootView;
+    }
+
+    public void selectOrders(String email) throws InterruptedException {
+        Thread selectOrdersThread = new Thread(){
+            @Override
+            public void run() {
+                super.run();
+                ExternalSelectOrders externalSelectOrders = new ExternalSelectOrders();
+                String result = externalSelectOrders.selectOrders(email);
+                orders = parseOrdersString(result);
+            }
+        };
+        selectOrdersThread.start();
+        selectOrdersThread.join();
     }
 
     public View.OnClickListener clickListener = new View.OnClickListener() {
@@ -67,35 +86,7 @@ public class GlobalCatalogueFragment extends Fragment {
         }
     };
 
-    public interface OrdersCallback {
-        void onOrdersReceived(ArrayList<HashMap<String, String>> orders);
-    }
 
-    public void getOrders(OrdersCallback callback) {
-        new Thread(new Runnable() {
-            public void run() {
-                ExternalSelectOrders externalSelectOrders = new ExternalSelectOrders();
-                String response = externalSelectOrders.selectOrders();
-                System.out.println("Response = " + response);
-                ArrayList<HashMap<String, String>> result = parseOrdersString(response); // метод, который будет парсить ответ
-
-                // выполнение обновления адаптера в основном потоке
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        callback.onOrdersReceived(result);
-                        System.out.println("ParsedData = " + result);
-                        recyclerView.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                recyclerView.getAdapter().notifyDataSetChanged();
-                            }
-                        });
-                    }
-                });
-            }
-        }).start();
-    }
     public ArrayList<HashMap<String, String>> parseOrdersString(String ordersString) {
         ArrayList<HashMap<String, String>> ordersList = new ArrayList<>();
         try {

@@ -78,51 +78,32 @@ public class CreateOrder extends AppCompatActivity {
 
                     // on below line we are creating a variable for date picker dialog.
                     DatePickerDialog datePickerDialog = new DatePickerDialog(
-                            // on below line we are passing context.
                             CreateOrder.this,
                             new DatePickerDialog.OnDateSetListener() {
                                 @Override
                                 public void onDateSet(DatePicker view, int year,
                                                       int monthOfYear, int dayOfMonth) {
-                                    // on below line we are setting date to our text view.
-                                    sendedAt = year  + "-" + monthOfYear + "-"+ (dayOfMonth + 1)  ;
-
+                                    sendedAt = year  + "-" + (monthOfYear + 1)+ "-" + dayOfMonth  ;
+                                    System.out.println("Sent date = " + sendedAt);
+                                    btnSendedAt.setText(sendedAt);
                                 }
                             },
-                            // on below line we are passing year,
-                            // month and day for selected date in our date picker.
                             year, month, day);
-                    // at last we are calling show to
-                    // display our date picker dialog.
                     datePickerDialog.show();
                     break;
                 case R.id.btnRecievedAt:
                     final Calendar c1 = Calendar.getInstance();
-
-                    // on below line we are getting
-                    // our day, month and year.
                     int year1 = c1.get(Calendar.YEAR);
                     int month1 = c1.get(Calendar.MONTH);
                     int day1 = c1.get(Calendar.DAY_OF_MONTH);
 
-                    // on below line we are creating a variable for date picker dialog.
-                    DatePickerDialog datePickerDialog1 = new DatePickerDialog(
-                            // on below line we are passing context.
-                            CreateOrder.this,
+                    DatePickerDialog datePickerDialog1 = new DatePickerDialog(CreateOrder.this,
                             new DatePickerDialog.OnDateSetListener() {
                                 @Override
-                                public void onDateSet(DatePicker view, int year1,
-                                                      int monthOfYear1, int dayOfMonth1) {
-                                    // on below line we are setting date to our text view.
-                                    recievedAt = year1  + "-" + monthOfYear1 + "-" + ( dayOfMonth1 + 1)  ;
-
-                                }
-                            },
-                            // on below line we are passing year,
-                            // month and day for selected date in our date picker.
-                            year1, month1, day1);
-                    // at last we are calling show to
-                    // display our date picker dialog.
+                                public void onDateSet(DatePicker view, int year1, int monthOfYear1, int dayOfMonth1) {
+                                    recievedAt = year1  + "-" + monthOfYear1 + "-" + dayOfMonth1;
+                                }},year1, month1, day1);
+                    btnRecievedAt.setText(recievedAt);
                     datePickerDialog1.show();
                     break;
 
@@ -133,6 +114,7 @@ public class CreateOrder extends AppCompatActivity {
                 case R.id.btnCreate:
                     String addressFromTxt = addressFrom.getText().toString();
                     String addressToTxt = addressTo.getText().toString();
+                    System.out.println("Sended at dsgdg = " + sendedAt);
                     String sendedAtTxt = sendedAt;
                     String recievedAtTxt = recievedAt;
                     String priceTxt = price.getText().toString();
@@ -172,7 +154,7 @@ public class CreateOrder extends AppCompatActivity {
         HashMap<String, String> oneUser=  resultSelect.get(0);
         email = oneUser.get("email");
         System.out.println("Email from local db: " + email);
-
+        System.out.println("sended at [createOrder] = "+ sentAt );
         createOrder.createOrder(addressFrom,addressTo,sentAt, recievedAt, price, distance, packSize, packType, packWeight, email);
 
 

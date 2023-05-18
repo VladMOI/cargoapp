@@ -14,13 +14,13 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.util.HashMap;
 
-import ua.moyseienko.cargoapp.SelectOrdersCallback;
+
 
 public class ExternalSelectOrderByEmail {
 
-    public String selectOrderByEmail(String email){
+    public String selectOrderByEmail(String email) {
+        System.out.println("Opening cnnection to API...");
         StringBuilder response = new StringBuilder();
-
         URL url = null;
         HttpURLConnection con = null;
         try {
@@ -30,7 +30,7 @@ public class ExternalSelectOrderByEmail {
             con.setRequestProperty("Content-Type", "application/json");
             con.setConnectTimeout(5000); // 5 секунд
             con.setReadTimeout(10000); // 10 секунд
-            HashMap<String,String> map = new HashMap<>();
+            HashMap<String, String> map = new HashMap<>();
             System.out.println("Email in externalorderbyemail = " + email);
             map.put("email", email);
             JSONObject jsonEmail = new JSONObject(map);
@@ -62,8 +62,13 @@ public class ExternalSelectOrderByEmail {
             }
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
-        }catch (IOException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
+        } finally {
+            if (con != null) {
+                System.out.println("Закрытие соединения...");
+                con.disconnect();
+            }
         }
         return "";
     }

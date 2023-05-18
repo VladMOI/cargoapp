@@ -30,19 +30,6 @@ public class LocalInsertUser {
         // Вставьте первую строку в таблицу "user"
         long rowId1 = db.insert(dbHelper.TABLE_NAME, null, values1);
 
-        // Создайте объект ContentValues для второй строки
-//        ContentValues values2 = new ContentValues();
-//        values2.put(dbHelper.COLUMN_FIRST_NAME, "Mary");
-//        values2.put(dbHelper.COLUMN_LAST_NAME, "Smith");
-//        values2.put(dbHelper.COLUMN_EMAIL, "marysmith@example.com");
-//        values2.put(dbHelper.COLUMN_PASSWORD, "password2");
-//        values2.put(dbHelper.COLUMN_EXPERIENCE, 3);
-//        values2.put(dbHelper.COLUMN_BALANCE, 50.0);
-//
-//        // Вставьте вторую строку в таблицу "user"
-//        long rowId2 = db.insert(dbHelper.TABLE_NAME, null, values2);
-
-        // Закройте базу данных
         db.close();
         return rowId1;
     }
